@@ -52,7 +52,7 @@ AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
     end
 
 
-    exports.oxmysql:scalar('SELECT COUNT(*) FROM allowed_hexes WHERE hex = ?', {steamHex}, function(count)
+    exports.oxmysql:scalar('SELECT COUNT(*) FROM eksartt_hex WHERE hex = ?', {steamHex}, function(count)
         if count > 0 then
             deferrals.done()
         else
