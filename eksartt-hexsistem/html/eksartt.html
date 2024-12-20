@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hex Yönetimi</title>
+    <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif; /* Modern bir yazı tipi */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: white;
+            display: none;
+            overflow: hidden;
+        }
+        
+        .container {
+            text-align: center;
+            background: rgba(60, 63, 65); 
+            padding: 30px;
+            border-radius: 16px;
+            display: none;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+            animation: fadeIn 0.6s ease-in-out; 
+        }
+        
+        input {
+            padding: 12px;
+            font-size: 18px;
+            margin: 20px 0;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        input:focus {
+            border-color: #4caf50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.8); /* Daha belirgin odak efekti */
+        }
+        
+        button {
+            padding: 15px 30px;
+            font-size: 16px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        
+        .add {
+            background: linear-gradient(135deg, #4caf50, #81c784); /* Gradyan düğme */
+            color: white;
+        }
+        
+        .remove {
+            background: linear-gradient(135deg, #f44336, #e57373); /* Gradyan düğme */
+            color: white;
+        }
+        
+        button:hover {
+            transform: scale(1.1); /* Daha etkileyici hover efekti */
+        }
+        
+        .add:hover {
+            background: linear-gradient(135deg, #45a049, #66bb6a);
+        }
+        
+        .remove:hover {
+            background: linear-gradient(135deg, #e53935, #ef5350);
+        }
+        
+        .close {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+        }
+        
+        .close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: #f44336;
+            transform: scale(1.2); /* Daha dinamik hover */
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+
+    </style>
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Hex Yönetimi</h1>
+        <input type="text" id="hexInput" placeholder="Steam Hex ID girin (örnek: steam:110000112345678)" />
+        <div>
+            <button class="add" onclick="addHex()">Ekle</button>
+            <button class="remove" onclick="removeHex()">Sil</button>
+        </div>
+    </div>
+    <button class="close" onclick="closeUI()">Kapat</button>
+    <script>
+        function addHex() {
+            const hex = document.getElementById('hexInput').value;
+            fetch(`https://${GetParentResourceName()}/addHex`, {
+                method: 'POST',
+                body: JSON.stringify({ hex }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+        }
+
+        function removeHex() {
+            const hex = document.getElementById('hexInput').value;
+            fetch(`https://${GetParentResourceName()}/removeHex`, {
+                method: 'POST',
+                body: JSON.stringify({ hex }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+        }
+        function closeUI() {
+            fetch(`https://${GetParentResourceName()}/closeUI`, {
+                method: 'POST'
+            });
+        }
+        window.addEventListener('message', function(event) {
+            if (event.data.type === "ui") {
+                if (event.data.status) {
+                    document.querySelector('.container').style.display = 'block'; 
+                } else {
+                    document.querySelector('.container').style.display = 'none'; 
+                }
+            }
+        });
+        window.addEventListener('message', function (event) {
+            if (event.data.type === "ui") {
+                if (event.data.status) {
+                    document.body.style.display = 'flex'; 
+                } else {
+                    document.body.style.display = 'none'; 
+                }
+            }
+        });
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') { 
+                fetch(`https://${GetParentResourceName()}/closeUI`, {
+                    method: 'POST'
+                });
+            }
+        });        
+    </script>
+</body>
+</html>
