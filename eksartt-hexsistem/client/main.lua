@@ -4,7 +4,7 @@ RegisterCommand("hexmenu", function()
         type = "ui",
         status = true
     })
-end, false)
+end, 'admin')
 
 RegisterNUICallback('addHex', function(data, cb)
     local hex = data.hex
