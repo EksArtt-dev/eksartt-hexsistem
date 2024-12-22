@@ -30,6 +30,16 @@ AddEventHandler('hexsil:hexsilmesiki', function(hex)
         end
     end)
 end)
+RegisterNetEvent("hexmenu:checkAdmin", function()
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+
+    if Player and Player.PlayerData.group == "admin" then
+        TriggerClientEvent("hexmenu:open", src)
+    else
+        TriggerClientEvent('QBCore:Notify', src, "Bu komutu kullanma yetkiniz yok.", "error") 
+    end
+end)
 
 
 AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
@@ -62,3 +72,12 @@ AddEventHandler('playerConnecting', function(name, setKickReason, deferrals)
     end)
 end)
 
+RegisterCommand("hexmenu", function(source, args, rawCommand)
+    local src = source
+
+    if IsPlayerAceAllowed(src, "admin") then
+        TriggerClientEvent('eksartt-hexsistem:ac', src)
+    else
+        TriggerClientEvent('QBCore:Notify', src, 'Komutu kullanmaya yetkiniz yetmiyor!', 'error')
+    end
+end)
