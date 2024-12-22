@@ -8,4 +8,5 @@
 - Eklediğiniz steam hexler dışında biri sunucuya giremez
 - Sadece adminler ekleyebilir
 - Şuanlık bu şekildedir güncellemeler gelecektir
-  
+
+# discord.gg/antiscript
