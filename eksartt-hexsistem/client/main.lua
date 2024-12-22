@@ -1,10 +1,12 @@
-RegisterCommand("hexmenu", function()
+local QBCore = exports['qb-core']:GetCoreObject()
+
+RegisterNetEvent('eksartt-hexsistem:ac', function()
     SetNuiFocus(true, true)
     SendNUIMessage({
         type = "ui",
         status = true
     })
-end, 'admin')
+end)
 
 RegisterNUICallback('addHex', function(data, cb)
     local hex = data.hex
